@@ -1,8 +1,4 @@
-CREATE TABLE CoronaKit (ID int(5) NOT NULL, PersonName varchar(255),
-    Email varchar(255), ContactNumber int(10), TotalAmount int(6),
-DeliveryAddress varchar(255), OrderDate Date, OrderFinalized varchar(4), PRIMARY KEY (ID));
+Naresh
+9502036738 
 
-CREATE TABLE KitDetail (ID int(5) NOT NULL, coronaKitId int(4), productId int(6), quantity int(3), amount int(6), PRIMARY KEY (ID));
-
-CREATE TABLE ProductMaster (ID int(5) NOT NULL, productName varchar(255),
-    cost int(8), productDescription varchar(255), PRIMARY KEY (ID));
+email - naresh223@gmail.com
