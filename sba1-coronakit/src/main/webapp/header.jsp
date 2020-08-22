@@ -3,10 +3,11 @@
 	<nav>
 		<a href="index.jsp">Home</a> 
 		<span>|</span> 
-		<a href="list">List All Products</a> 
-		<span>|</span> <a href="list">New Product</a> 
+		<a href="listproducts.jsp">List All Products</a> 
+		<span>|</span> 
+		<a href="newproduct.jsp">New Product</a> 
 		<span>|</span>
-		<a href="list">Edit Product</a>
+		<a href="editproduct.jsp">Edit Product</a>
 	</nav>
 	<hr />
 </header>

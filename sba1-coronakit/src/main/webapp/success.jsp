@@ -4,15 +4,14 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Corona Kit-All Products(user)</title>
+<title>Admin login success page</title>
 </head>
 <body>
 <jsp:include page="header.jsp"/>
-<hr/>
-
-<%-- Required View Template --%>
-
-<hr/>	
-	<jsp:include page="footer.jsp"/>
+<h1>Successfully logged in as admin</h1>
+<div>
+<a href="logout.jsp" >Logout</a>
+</div>
+<jsp:include page="footer.jsp"/>
 </body>
 </html>

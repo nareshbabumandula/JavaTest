@@ -1,9 +1,12 @@
 package com.iiht.evaluation.coronokit.controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.List;
-
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -11,115 +14,104 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.iiht.evaluation.coronokit.exception.AdminException;
+import com.iiht.evaluation.coronokit.model.ProductMaster;
+import com.iiht.evaluation.coronokit.service.AdminService;
+import com.iiht.evaluation.coronokit.service.AdminServiceImpl;
 
-import com.iiht.evaluation.coronokit.dao.ProductMasterDao;
-import com.iiht.evaluation.coronokit.model.ProductMaster; 
 
-//@WebServlet({"/admin","/login","/newproduct","/insertproduct","/deleteproduct","/editproduct","/updateproduct","/list","/logout"})
-@WebServlet("/admin")
+@WebServlet({"/admin","/login","/insertproduct","/deleteproduct","/editproduct","/list","/logout"})
+//@WebServlet("/admin")
 public class AdminController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private ProductMasterDao productMasterDao;
 	
-
-	public void setProductMasterDao(ProductMasterDao productMasterDao) {
-		this.productMasterDao = productMasterDao;
+	public static final long serialVersionUID = 1L;
+	private AdminService adminService;
+	
+	@Override
+	public void init() throws ServletException {
+		adminService = new AdminServiceImpl();
 	}
-
-	public void init(ServletConfig config) {
-		String jdbcURL = config.getServletContext().getInitParameter("jdbcUrl");
-		String jdbcUsername = config.getServletContext().getInitParameter("jdbcUsername");
-		String jdbcPassword = config.getServletContext().getInitParameter("jdbcPassword");
-
-		this.productMasterDao = new ProductMasterDao(jdbcURL, jdbcUsername, jdbcPassword);
-
-	}
-
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doGet(request, response);
 	}
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String action =  request.getParameter("action");
-		String viewName = "";
-		try {
-			switch (action) {
-			case "login" : 
-				viewName = adminLogin(request, response);
-				break;
-			case "newproduct":
-				viewName = showNewProductForm(request, response);
-				break;
-			case "insertproduct":
-				viewName = insertProduct(request, response);
-				break;
-			case "deleteproduct":
-				viewName = deleteProduct(request, response);
-				break;
-			case "editproduct":
-				viewName = showEditProductForm(request, response);
-				break;
-			case "updateproduct":
-				viewName = updateProduct(request, response);
-				break;
-			case "list":
-				viewName = listAllProducts(request, response);
-				break;	
-			case "logout":
-				viewName = adminLogout(request, response);
-				break;	
-			default : viewName = "notfound.jsp"; break;		
+		String url = request.getServletPath();
+		//String action =  request.getParameter("action");
+
+		String view = "";
+
+		switch (url) {
+			case "login" : view = doAdminLogin(request, response);break;
+			case "insertproduct":view = doInsertProduct(request, response);break;
+			case "deleteproduct":view = doDeleteProduct(request, response);break;
+			//case "editproduct":view = doEditproduct(request, response);break;
+			case "list":view = doGetAllProducts(request, response);break;	
+			case "logout":view = doAdminLogout(request, response);break;	
+			default : view = "notfound.jsp"; break;		
 			}
-		} catch (Exception ex) {
-			throw new ServletException(ex.getMessage());
+		
+		RequestDispatcher dispatch = request.getRequestDispatcher(view);
+		 dispatch.forward(request, response);	 
+		
+	}
+
+	private String doAdminLogout(HttpServletRequest request, HttpServletResponse response) {
+		String viewName= null;
+		viewName = "logout.jsp";
+		return viewName;
+	}
+
+	private String doGetAllProducts(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException  {
+		String view = ""; 
+		try {
+			List<ProductMaster> products = adminService.listAllProducts();
+			request.setAttribute("products", products);
+			view = "listproducts.jsp";
+		}catch(AdminException e) {
+			request.setAttribute("errMsg", e.getMessage());
+			view = "errorPage.jsp";	
+		} 
+		return view;
+	}
+
+	private String doDeleteProduct(HttpServletRequest request, HttpServletResponse response) {
+		int productId = Integer.parseInt(request.getParameter("id"));
+		String view ="";
+		try {
+			adminService.deleteProduct(productId);
+			request.setAttribute("msg", "Product Record Deleted!");
+			view = "index.jsp";
+		} catch (AdminException e) {
+			request.setAttribute("errMsg", e.getMessage());
+			view = "errPage.jsp";
 		}
-		RequestDispatcher dispatch = 
-					request.getRequestDispatcher(viewName);
-		dispatch.forward(request, response);
+
+		return view;
+	}
+	
+	private String doInsertProduct(HttpServletRequest request, HttpServletResponse response){
 		
+		 String viewName = null; 
+		return viewName;
+	} 
+
+	private String doAdminLogin(HttpServletRequest request, HttpServletResponse response) {
 		
+		String name = request.getParameter("Loginid");
+		String pwd = request.getParameter("Password");
+		
+		String viewName= null;
+		
+		if(name.equalsIgnoreCase("admin") && pwd.equalsIgnoreCase("admin")) {  
+			viewName = "success.jsp";
+		} else {
+			viewName = "errorPage.jsp";
+		}
+		return viewName;
 	}
-
-	private String adminLogout(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return "";
-	}
-
-	private String listAllProducts(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return "";
-	}
-
-	private String updateProduct(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return "";
-	}
-
-	private String showEditProductForm(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return "";
-	}
-
-	private String deleteProduct(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return "";
-	}
-
-	private String insertProduct(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return "";
-	}
-
-	private String showNewProductForm(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return "";
-	}
-
-	private String adminLogin(HttpServletRequest request, HttpServletResponse response) {
-		return "";
-	}
-
 	
 }

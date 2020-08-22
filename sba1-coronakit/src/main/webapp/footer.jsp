@@ -1,1 +1,1 @@
-<h1>Footer...</h1>
+<h1>Developed for Corona kit</h1>

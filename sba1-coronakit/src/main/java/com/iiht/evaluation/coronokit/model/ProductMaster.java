@@ -9,14 +9,14 @@ public class ProductMaster {
 
 	private int id;
 	private String productName;
-	private String cost;
+	private int cost;
 	private String productDescription;
 	
 	public ProductMaster() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public ProductMaster(int id, String productName, String cost, String productDescription) {
+	public ProductMaster(int id, String productName, int cost, String productDescription) {
 		super();
 		this.id = id;
 		this.productName = productName;
@@ -35,10 +35,10 @@ public class ProductMaster {
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
-	public String getCost() {
+	public int getCost() {
 		return cost;
 	}
-	public void setCost(String cost) {
+	public void setCost(int cost) {
 		this.cost = cost;
 	}
 	public String getProductDescription() {

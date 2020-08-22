@@ -10,7 +10,7 @@
 <hr/>
 <jsp:include page="header.jsp"/>
 	<h2>Add New Product</h2>
-	<form action="insertProduct" method="post">
+	<form action="updateproduct" method="post">
 		<div>
 			<div><label for="productId">Enter Product Id</label> </div>
 			<div><input type="text" id="productId" name="ProductId"> </div>
@@ -28,7 +28,7 @@
 			<div><input type="text" id="productDescription" name="ProductDescription"> </div>
 		</div>
 		<div>
-			<div><input type="submit" value="Save"> </div>
+			<div><input type="submit" value="Update"> </div>
 		</div>
 	</form>
 	<hr/>	

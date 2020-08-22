@@ -1,4 +1,4 @@
-package com.iiht.evaluation.coronokit.controller;
+/*package com.iiht.evaluation.coronokit.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -13,20 +13,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.iiht.evaluation.coronokit.dao.KitDao;
-import com.iiht.evaluation.coronokit.dao.ProductMasterDao;
+import com.iiht.evaluation.coronokit.dao.AdminDAOImpl;
 import com.iiht.evaluation.coronokit.model.CoronaKit;
 
 @WebServlet({"/user","/newuser","/newproduct","/insertuser","/showproducts","/addnewitem","/deleteitem","/showkit","/placeorder","/saveorder","/ordersummary"})
 public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private KitDao kitDAO;
-	private ProductMasterDao productMasterDao;
+	private AdminDAOImpl productMasterDao;
 
 	public void setKitDAO(KitDao kitDAO) {
 		this.kitDAO = kitDAO;
 	}
 
-	public void setProductMasterDao(ProductMasterDao productMasterDao) {
+	public void setProductMasterDao(AdminDAOImpl productMasterDao) {
 		this.productMasterDao = productMasterDao;
 	}
 
@@ -36,7 +36,7 @@ public class UserController extends HttpServlet {
 		String jdbcPassword = config. getServletContext().getInitParameter("jdbcPassword");
 		
 		this.kitDAO = new KitDao(jdbcURL, jdbcUsername, jdbcPassword);
-		this.productMasterDao = new ProductMasterDao(jdbcURL, jdbcUsername, jdbcPassword);
+		this.productMasterDao = new AdminDAOImpl(jdbcURL, jdbcUsername, jdbcPassword);
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -134,4 +134,4 @@ public class UserController extends HttpServlet {
 		// TODO Auto-generated method stub
 		return "";
 	}
-}
+}*/
